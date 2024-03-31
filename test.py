@@ -1,15 +1,7 @@
 import sys
 specialChars= set()
-noSpecialChar={".","\r","\n"}
 activationChars= {'=', '&', '*', '-', '#', '$', '+', '%', '/', '@'}
 
-""" for line in sys.stdin:            
-    for lineChar in line:
-        if lineChar in noSpecialChar:pass
-        elif lineChar.isdigit():pass
-        else: specialChars.add(lineChar)
-
-print(specialChars) """
 
 
 def checkSpecialCharsAroundNumber(matrix, x, y):
@@ -121,20 +113,13 @@ def checkSpecialCharsAroundNumber(matrix, x, y):
 
 
 def vypis_pole(pole):
-  """
-  Funkce vypíše dvourozměrné pole na konzoli.
-
-  Argumenty:
-    pole: Dvourozměrné pole.
-  """
   for radek in pole:
     for sloupec in radek:
       print(f"{sloupec:2}", end=" ")
     print()
 
-y=0
 
-ar = [
+testArray = [
     ['2','3','3','#'],
     ['.','.','.','.'],
     ['#','.','.','.'],
@@ -147,46 +132,44 @@ ar = [
 """ print(len(ar)) #6
 print(len(ar[2])) #4 """
 
-counter=0
-countNumber=False
-numberToConvert=""
-for y in range(len(ar)):
-    for x in range(len(ar[y])):
-        print("coor: [" + str(x) + "," + str(y) + "] = "+ str(ar[y][x]))
-        if ar[y][x].isdigit():
-            specChar=checkSpecialCharsAroundNumber(ar,x,y)
-            #print("[" + str(x) + "," + str(y) + "] - " +  specChar)
-            print("guf")
-            print(str(specChar))
-            if len(specChar)>0: countNumber=True
-            numberToConvert+=str(ar[y][x])
-            
-            #tady je nejspis chyba
-        
-
-            if x+1<len(ar[y]) and ar[y][x+1].isdigit():
-                pass
-            elif x==len(ar[y]) and y ==len(ar):
+def countNumbersAroundSpecCharsIn2DArray(ar):
+    counter=0
+    countNumber=False
+    numberToConvert=""
+    for y in range(len(ar)):
+        for x in range(len(ar[y])):
+            #print("coor: [" + str(x) + "," + str(y) + "] = "+ str(ar[y][x]))
+            if ar[y][x].isdigit():
+                specChar=checkSpecialCharsAroundNumber(ar,x,y)
+                if len(specChar)>0: countNumber=True
+                numberToConvert+=str(ar[y][x])
+                if x+1<len(ar[y]) and ar[y][x+1].isdigit():
+                    pass
+                elif x==len(ar[y]) and y ==len(ar):
                     counter+=int(numberToConvert)
                     numberToConvert=""
                     specChar=""
                     countNumber=False
-                    print("counter = " + str(counter))
-                    vypis_pole(ar)
-            else:
-                if countNumber:
+                    #print("counter = " + str(counter))
+                    #vypis_pole(ar)
+                else:
+                    if countNumber:
+                        #pokud zapocitame cislo tak ho v pruchozi matici vynulujeme aby nevznikaly duplicity v souctu
+                        for z in range(len(numberToConvert)):
+                            ar[y][x-z]=0
 
-                    #pokud zapocitame cislo tak ho v pruchozi matici vynulujeme aby nevznikaly duplicity v souctu
-                    for z in range(len(numberToConvert)):
-                        ar[y][x-z]=0
+                        counter+=int(numberToConvert)
+                        numberToConvert=""
+                        specChar=""
+                        countNumber=False
+                        #print("counter = " + str(counter))
+                        #vypis_pole(ar)
+                    else:
+                        pass
+                        #print("number wasnt around special char")
+    return counter
 
-                    counter+=int(numberToConvert)
-                    numberToConvert=""
-                    specChar=""
-                    countNumber=False
-                    print("counter = " + str(counter))
-                    vypis_pole(ar)
-                else:print("number wasnt around special char")
+print(str(countNumbersAroundSpecCharsIn2DArray(testArray)))
 
 
 
