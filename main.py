@@ -5,14 +5,7 @@ matrix = []
 
 activationChars= {'=', '&', '*', '-', '#', '$', '+', '%', '/', '@'}
 
-testArray = [
-    ['2','3','3','#','.','.','.','2','3','.','.','.'],
-    ['.','.','.','.','.','.','.','.','.','$','.','.'],
-    ['.','.','2','3','.','.','.','.','.','.','1','.'],
-    ['.','.','.','.','.','.','#','5','5','.','.','.'],
-    ['.','.','5','5','.','.','.','.','.','.','.','.'],
-    ['.','.','.','&','.','.','.','.','.','.','^','3'],
-]
+
 
 
 def findSpecialCharsInInput():
@@ -24,6 +17,27 @@ def findSpecialCharsInInput():
             if lineChar in noSpecialChar:pass
             elif lineChar.isdigit():pass
             else: specialChars.add(lineChar)
+    
+    return specialChars
+
+def findSpecialChars(input):
+    specialChars= set()
+    noSpecialChar={".","\r","\n"}
+
+    for y in input:            
+        for x in y:
+            if x in noSpecialChar:pass
+            elif x.isdigit():pass
+            else: specialChars.add(x)
+    
+    return specialChars
+
+def checkForAlphabetCharsInInput():
+    alphaChars= set()
+
+    for line in sys.stdin:            
+        for lineChar in line:
+            if lineChar.isalpha(): alphaCharsInInput=True
     
     return specialChars
 
@@ -147,11 +161,14 @@ def checkSpecialCharsAroundNumber(matrix, x, y):
     #down right corner
     if x==len(matrix[y])-1 and y== len(matrix)-1:
         # <
-        if matrix[y][x-1] in activationChars:specialCharAround += "Left"
+        if matrix[y][x-1] in activationChars:
+            specialCharAround += "Left"
         # ^
-        if matrix[y-1][x] in activationChars:specialCharAround += "Top"
+        if matrix[y-1][x] in activationChars:
+            specialCharAround += "Top"
          # <-^
-        if matrix[y-1][x-1] in activationChars:specialCharAround += "Topleft"
+        if matrix[y-1][x-1] in activationChars:
+            specialCharAround += "Topleft"
     return specialCharAround
 
 def vypis_pole(pole):
@@ -166,7 +183,7 @@ def countNumbersAroundSpecCharsIn2DArray(ar):
     numberToConvert=""
     for y in range(len(ar)):
         for x in range(len(ar[y])):
-            #if str(ar[y][x])!="." : print("coor: [" + str(x) + "," + str(y) + "] = "+ str(ar[y][x]))
+            if str(ar[y][x])!="." : print("coor: [" + str(x) + "," + str(y) + "] = "+ str(ar[y][x]))
             if ar[y][x].isdigit():
                 specChar=checkSpecialCharsAroundNumber(ar,x,y)
                 if len(specChar)>0: countNumber=True
@@ -178,7 +195,7 @@ def countNumbersAroundSpecCharsIn2DArray(ar):
                     numberToConvert=""
                     specChar=""
                     countNumber=False
-                    print("counter = " + str(counter))
+                    #print("counter = " + str(counter))
                     #vypis_pole(ar)
                 else:
                     if countNumber:
@@ -195,14 +212,21 @@ def countNumbersAroundSpecCharsIn2DArray(ar):
                     else:
                         numberToConvert=""
                         specChar=""
-                        print("number wasnt around special char")
+                        #print("number wasnt around special char")
     return counter
 
-    
+testArray = [
+    ['2','3','3','#','.','.','.','2','3','.','.','.'],
+    ['.','.','.','.','.','.','.','.','.','$','.','.'],
+    ['.','.','2','3','.','.','.','.','.','.','1','.'],
+    ['.','.','.','.','.','.','#','5','5','.','.','.'],
+    ['.','.','5','5','.','.','.','.','.','.','.','.'],
+    ['.','.','.','&','.','.','.','.','.','.','%','3'],
+]
 
-matrix = fillMatrix()
-print(countNumbersAroundSpecCharsIn2DArray(matrix))
+#matrix = fillMatrix()
+print(countNumbersAroundSpecCharsIn2DArray(testArray))
 
-print("posledni cislo nepricita")
+
 
 
