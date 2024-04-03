@@ -1,5 +1,5 @@
 import sys
-from main import findSpecialCharsInInput
+
 
 activationChars= {'=', '&', '*', '-', '#', '$', '+', '%', '/', '@'}
 
@@ -44,9 +44,18 @@ noNumberTestArray = [
     ['.','.','.','.']
 ]
 
-def test_findSpecialCharsInInput_noNumbersNoSpecialChars() -> None:
+""" def test_findSpecialCharsInInput_noNumbersNoSpecialChars() -> None:
     specialChars= set()
     noSpecialChar={".","\r","\n"}
     specialChars = findSpecialCharsInInput()
-    assert len(specialChars) == 0
+    assert len(specialChars) == 0 """
 
+def test():
+
+    for i in range(3):
+        for lineChar in sys.stdin.readline():
+            #debug
+            print(repr(lineChar))
+        i+=1
+        
+test()

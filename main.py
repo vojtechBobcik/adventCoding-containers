@@ -6,7 +6,11 @@ matrix = []
 activationChars= {'=', '&', '*', '-', '#', '$', '+', '%', '/', '@'}
 
 
-
+def vypis_pole(pole):
+  for radek in pole:
+    for sloupec in radek:
+      print(f"{sloupec:2}", end="")
+    print()
 
 def findSpecialCharsInInput():
     specialChars= set()
@@ -39,7 +43,7 @@ def checkForAlphabetCharsInInput():
         for lineChar in line:
             if lineChar.isalpha(): alphaCharsInInput=True
     
-    return specialChars
+    return alphaChars
 
 def fillMatrix():
     matrix = []
@@ -171,18 +175,19 @@ def checkSpecialCharsAroundNumber(matrix, x, y):
             specialCharAround += "Topleft"
     return specialCharAround
 
-def vypis_pole(pole):
-  for radek in pole:
-    for sloupec in radek:
-      print(f"{sloupec:2}", end="")
-    print()
+
+
 
 def countNumbersAroundSpecCharsIn2DArray(ar):
     counter=0
     countNumber=False
     numberToConvert=""
+    
     for y in range(len(ar)):
+        
+        
         for x in range(len(ar[y])):
+            
             if str(ar[y][x])!="." : print("coor: [" + str(x) + "," + str(y) + "] = "+ str(ar[y][x]))
             if ar[y][x].isdigit():
                 specChar=checkSpecialCharsAroundNumber(ar,x,y)
@@ -212,21 +217,93 @@ def countNumbersAroundSpecCharsIn2DArray(ar):
                     else:
                         numberToConvert=""
                         specChar=""
-                        #print("number wasnt around special char")
+                        #print("number wasnt around special char") """
     return counter
+        
+def addLineIntoMatrix(workingArray, inputLine):
+    
+    inputChunk = []
+    ar=workingArray
+  
+    if len(ar) < 3:
+        for lineChar in inputLine:
+            #TODO work with EOF one line
+            if lineChar != "\r":
+                inputChunk.append(lineChar)
+            else:  
+                ar.append(inputChunk)
+                #debug
+                print("_________________________________________" + str(len(ar)))
+                vypis_pole(ar)
+                inputChunk = []
+                break
+    
+    else:
+        print("else")
+        print(inputLine)
+        for lineChar in inputLine:
+            if lineChar != "\r":
+                inputChunk.append(lineChar)
+            else:
+                print("_________________________________________" + str(len(ar)))
+                print("else else")
+                print()
+                print(inputChunk)
+                vypis_pole(ar)
+                ar[0]=ar[1]
+                ar[1]=ar[2]
+                ar[2]=inputChunk
+                print("_________________________________________")
+                vypis_pole(ar)
+                
+                
+                inputChunk=[]
+    workingArray = ar
+    return workingArray
 
-testArray = [
-    ['2','3','3','#','.','.','.','2','3','.','.','.'],
-    ['.','.','.','.','.','.','.','.','.','$','.','.'],
-    ['.','.','2','3','.','.','.','.','.','.','1','.'],
-    ['.','.','.','.','.','.','#','5','5','.','.','.'],
-    ['.','.','5','5','.','.','.','.','.','.','.','.'],
-    ['.','.','.','&','.','.','.','.','.','.','%','3'],
-]
+def solveLine(line):
+    
+    for x in range(len(line)):
+            
+            if str(line[x])!="." : print("coor: [" + str(x) + "," + str(y) + "] = "+ str(line[x]))
+            if line[x].isdigit():
+                specChar=checkSpecialCharsAroundNumber(ar,x,y)
+                if len(specChar)>0: countNumber=True
+                numberToConvert+=str(line[x])
+                if x+1<len(line) and line[x+1].isdigit():
+                    pass
+                elif x==len(line) and y ==len(ar):
+                    counter+=int(numberToConvert)
+                    numberToConvert=""
+                    specChar=""
+                    countNumber=False
+                    #print("counter = " + str(counter))
+                    #vypis_pole(ar)
+                else:
+                    if countNumber:
+                        #pokud zapocitame cislo tak ho v pruchozi matici vynulujeme aby nevznikaly duplicity v souctu
+                        for z in range(len(numberToConvert)):
+                            line[x-z]=0
+
+                        counter+=int(numberToConvert)
+                        numberToConvert=""
+                        specChar=""
+                        countNumber=False
+                        print("counter = " + str(counter))
+                        #vypis_pole(ar)
+                    else:
+                        numberToConvert=""
+                        specChar=""
+                        #print("number wasnt around special char")
+
+def refactor():
+    matrix = []
+    
+    for line in sys.stdin:
+        addLineIntoMatrix(matrix, line)
+        
 
 #matrix = fillMatrix()
-print(countNumbersAroundSpecCharsIn2DArray(testArray))
 
-
-
+refactor()
 
