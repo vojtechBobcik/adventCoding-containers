@@ -191,21 +191,20 @@ def addNextLineIntoMatrix(ar:list, inputLine):
             inputChunk.append(lineChar)
         else:
             ar[-1] = inputChunk
-            
     return ar
 
-def countNumbersAroundSpecialCharsInLineOfMatrix(ar:list, y:int, counter:int ):
+def countNumbersAroundSpecialCharsInLineOfMatrix(array:list, lineOfArray:int, counter:int ):
     countNumber=False
     numberToConvert=""
-    for x in range(len(ar[y])):
+    for x in range(len(array[lineOfArray])):
         #if str(ar[y][x])!="." :print("coor: [" + str(x) + "," + str(y) + "] = "+ str(ar[y][x]))
-        if str(ar[y][x]).isdigit():
-            specChar=checkSpecialCharsAroundNumber(ar,x,y)
+        if str(array[lineOfArray][x]).isdigit():
+            specChar=checkSpecialCharsAroundNumber(array,x,lineOfArray)
             if len(specChar)>0: countNumber=True
-            numberToConvert+=str(ar[y][x])
-            if x+1<len(ar[y]) and str(ar[y][x+1]).isdigit():
+            numberToConvert+=str(array[lineOfArray][x])
+            if x+1<len(array[lineOfArray]) and str(array[lineOfArray][x+1]).isdigit():
                 pass
-            elif x==len(ar[y]) and y ==len(ar):
+            elif x==len(array[lineOfArray]) and lineOfArray ==len(array):
                 counter+=int(numberToConvert)
                 numberToConvert=""
                 specChar=""
@@ -216,7 +215,7 @@ def countNumbersAroundSpecialCharsInLineOfMatrix(ar:list, y:int, counter:int ):
                 if countNumber:
                     #pokud zapocitame cislo tak ho v pruchozi matici vynulujeme aby nevznikaly duplicity v souctu
                     for z in range(len(numberToConvert)):
-                        ar[y][x-z]=0
+                        array[lineOfArray][x-z]=0
 
                     counter+=int(numberToConvert)
                     numberToConvert=""
@@ -250,27 +249,19 @@ def refactor():
     print("END OF READING")    
     #count end of matrix
     vypis_2D_pole(matrix)
-    
-    addNextLineIntoMatrix(matrix, sys.stdin)
     print("///////////////////////////////////")
-    vypis_2D_pole(matrix)
+
+    addNextLineIntoMatrix(matrix, sys.stdin)
     
     for i in range(3):
         shiftMatrixUp(matrix, 1)
-        print(repr(matrix[-1]))
         vypis_2D_pole(matrix)
         for x in range(len(matrix[-1])-1):
             matrix[-1][x]="."
             
         
         counter = countNumbersAroundSpecialCharsInLineOfMatrix(matrix,1,counter)
-        i+=1
-
-    
-    ## poresene nacitani a posunovani dat.. ted jdes resit 
-    ## testovani 1. radku a potom 2. a ostatnich az do konce vstupu, pak poresis posledni
-
-        
+        i+=1        
 
 refactor()
 
