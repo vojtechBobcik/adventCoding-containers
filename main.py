@@ -224,8 +224,8 @@ testArray = [
     ['.','.','.','&','.','.','.','.','.','.','%','3'],
 ]
 
-#matrix = fillMatrix()
-print(countNumbersAroundSpecCharsIn2DArray(testArray))
+matrix = fillMatrix()
+print(countNumbersAroundSpecCharsIn2DArray(matrix))
 
 
 
