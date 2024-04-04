@@ -6,8 +6,6 @@ matrix = []
 activationChars= {'=', '&', '*', '-', '#', '$', '+', '%', '/', '@'}
 
 
-
-
 def findSpecialCharsInInput():
     specialChars= set()
     noSpecialChar={".","\r","\n"}
@@ -20,7 +18,7 @@ def findSpecialCharsInInput():
     
     return specialChars
 
-def findSpecialChars(input):
+def findSpecialChars(input:list):
     specialChars= set()
     noSpecialChar={".","\r","\n"}
 
@@ -33,28 +31,24 @@ def findSpecialChars(input):
     return specialChars
 
 def checkForAlphabetCharsInInput():
-    alphaChars= set()
+
+    alphaCharsInInput = set()
 
     for line in sys.stdin:            
         for lineChar in line:
-            if lineChar.isalpha(): alphaCharsInInput=True
+            if lineChar.isalpha(): haveAlphaChars=True
     
-    return specialChars
+    print("Input has these alphabetical characters in it: " + repr(alphaCharsInInput))
+    return haveAlphaChars
 
 def fillMatrix():
     matrix = []
-    #i=0
     inputChunk = []
-    for line in sys.stdin:
-        #if i < 5: #TODO remove when want to solve full problem
-            #print(repr(line))
-            
+    for line in sys.stdin:            
         for lineChar in line:
             if lineChar != "\r":
                 inputChunk.append(lineChar)
             else: 
-                #print("ELSE ______________________")
-                #print(inputChunk)
                 matrix.append(inputChunk)
                 inputChunk = []
                 break
@@ -171,10 +165,10 @@ def checkSpecialCharsAroundNumber(matrix, x, y):
             specialCharAround += "Topleft"
     return specialCharAround
 
-def vypis_pole(pole):
-  for radek in pole:
-    for sloupec in radek:
-      print(f"{sloupec:2}", end="")
+def print_2D_List(array):
+  for line in array:
+    for char in line:
+      print(f"{char:2}", end="")
     print()
 
 def countNumbersAroundSpecCharsIn2DArray(ar):
@@ -183,46 +177,38 @@ def countNumbersAroundSpecCharsIn2DArray(ar):
     numberToConvert=""
     for y in range(len(ar)):
         for x in range(len(ar[y])):
-            if str(ar[y][x])!="." : print("coor: [" + str(x) + "," + str(y) + "] = "+ str(ar[y][x]))
-            if ar[y][x].isdigit():
+            #DEBUG 
+            # if str(ar[y][x])!="." : print("coor: [" + str(x) + "," + str(y) + "] = "+ str(ar[y][x]))
+            if str(ar[y][x]).isdigit():
                 specChar=checkSpecialCharsAroundNumber(ar,x,y)
                 if len(specChar)>0: countNumber=True
                 numberToConvert+=str(ar[y][x])
-                if x+1<len(ar[y]) and ar[y][x+1].isdigit():
+                if x+1<len(ar[y]) and str(ar[y][x+1]).isdigit():
                     pass
                 elif x==len(ar[y]) and y ==len(ar):
                     counter+=int(numberToConvert)
                     numberToConvert=""
                     specChar=""
                     countNumber=False
-                    #print("counter = " + str(counter))
-                    #vypis_pole(ar)
                 else:
                     if countNumber:
-                        #pokud zapocitame cislo tak ho v pruchozi matici vynulujeme aby nevznikaly duplicity v souctu
+                        #DEBUG - make counted numbers bunch of zeros
+                        """ 
                         for z in range(len(numberToConvert)):
-                            ar[y][x-z]=0
+                            ar[y][x-z]=0 """
 
                         counter+=int(numberToConvert)
                         numberToConvert=""
                         specChar=""
                         countNumber=False
-                        print("counter = " + str(counter))
-                        #vypis_pole(ar)
+                        #DEBUG
+                        #print("counter = " + str(counter))
                     else:
                         numberToConvert=""
                         specChar=""
+                        #DEBUG 
                         #print("number wasnt around special char")
     return counter
-
-testArray = [
-    ['2','3','3','#','.','.','.','2','3','.','.','.'],
-    ['.','.','.','.','.','.','.','.','.','$','.','.'],
-    ['.','.','2','3','.','.','.','.','.','.','1','.'],
-    ['.','.','.','.','.','.','#','5','5','.','.','.'],
-    ['.','.','5','5','.','.','.','.','.','.','.','.'],
-    ['.','.','.','&','.','.','.','.','.','.','%','3'],
-]
 
 matrix = fillMatrix()
 print(countNumbersAroundSpecCharsIn2DArray(matrix))
